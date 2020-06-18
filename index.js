@@ -40,9 +40,41 @@ class Airplane {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-class Person {
+// creating Parent object Person and methods
 
+class Person {
+  constructor(name, age, stomach){
+    this.name = name;
+    this.age = age;
+    this.stomach = [];
+  } 
+  eat(edible){
+    if(this.stomach.length < 10) {
+      this.stomach.push(edible);
+    }
+  }
+  poop(){
+    this.stomach = [];
+  }
+  toString(){
+    return `${this.name},  ${this.age}`;
+  }
 }
+
+// creating objects
+ const personOne = new Person('Bob', 52);
+
+
+// console log tests
+console.log(personOne); // prints person out properly
+personOne.eat('pizza');
+personOne.eat('taco');
+personOne.eat('milkshake'); // fills stomach array properly 
+console.log(personOne); // check if stomach array is filled
+personOne.poop(); // emptys stomach array
+console.log(personOne); // check if stomach array is emptied
+console.log(personOne.toString()); // prints string
+
 
 /*
   TASK 2
@@ -58,9 +90,40 @@ class Person {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
+// buidling Constructor class to build Car object and methods
 class Car {
+  constructor(model, milesPerGallon, tank, odometer){
+    this.model = model;
+    this.milesPerGallon = milesPerGallon;
+    this.tank = 0;
+    this.odometer = 0;
+  }
+  fill(gallons){
+    this.tank = this.tank + gallons;
+    return this.tank;
+  }
+  drive(distance){
+    let remaining = this.tank *this.milesPerGallon;
+    if (remaining <= distance){
+      this.odometer += remaining;
+      this.tank = 0;
+      return `I ran out of fuel at ${this.odometer}!`
+    } else{
+      this.odometer += distance;
+      this.tank -= distance / this.milesPerGallon;
+    }
+}}
+  // creating car object
+const carOne = new Car('Outback', 20);
 
-}
+console.log(carOne); //checks that car is created correctly
+carOne.fill(20); // fills the tank with 20 gallons
+console.log(carOne); // checking to see if value from fill was stored in object
+carOne.drive(178); // invokes drive method from car object
+console.log(carOne); // checking to see if odometer went up and tank went down
+carOne.drive(100); // invokes drive method from car object
+console.log(carOne); 
+
 
 /*
   TASK 3
@@ -74,9 +137,29 @@ class Car {
         + Speaking should return a phrase `Hello my name is {name}, I am from {location}`.
         + {name} and {location} of course come from the instance's own properties.
 */
-class Lambdasian {
 
+//creates Lambdasian Constructor for object creation
+class Lambdasian {
+  constructor(attributes){
+    this.name = attributes.name;
+    this.age = attributes.age;
+    this.location = attributes.location;
+  }
+  speak(){
+    return `Hello my name is ${this.name}, I am from ${this.location}.`
+  }
 }
+
+// creates new Lambdasian
+const lambdasianOne = new Lambdasian({
+  name: 'Chayce',
+  age: 33,
+  location: 'Los Angeles',
+});
+
+console.log(lambdasianOne); // checks to see if Lambdasian was created correctly
+console.log(lambdasianOne.speak()); // invokes the speak method from Lambdasian
+
 
 /*
   TASK 4
@@ -92,9 +175,41 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
 
+// creates Instructor constructor and methods to make instructor objects
+class Instructor extends Lambdasian {
+  constructor (attributes){
+    super(attributes);
+    this.specialty = attributes.specialty;
+    this.favLanguage = attributes.favLanguage;
+    this.catchPhrase = attributes.catchPhrase;
+  }
+  demo(subject){
+    return `Today we are learning about ${subject}`;
+  }
+  grade(student, subject){
+    return `${student.name} receives a perfect score on ${subject}`;
+  }
+  // *** STRETCH *** create method to randomly subtract points from a student object's grade.
+  criticize(gradedStudent){
+    let finalGrade = gradedStudent.grade + Math.random();
+    return `${this.name} graded ${gradedStudent.name}'s assignment and it is scored at ${finalGrade}`;
+  }
 }
+
+const britH = new Instructor ({
+  name: 'Brit',
+  age: '32',
+  location: 'Canada',
+  specialty: 'Intro to everything',
+  favLanguage: 'Javascript',
+  catchPhrase: 'Hello Web 33'
+});
+
+console.log(britH); // check to see if Instructor was created
+console.log(britH.speak()); // checks to see if parent method was inherited
+console.log(britH.demo('Arrays')); // checks to see if demo method works as expected
+
 
 /*
   TASK 5
@@ -111,10 +226,53 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
 
+// creates Student conscructor inheriting values and methods from Lambdasian
+class Student extends Lambdasian {
+  constructor(attributes){
+    super(attributes);
+    this.previousBackground = attributes.previousBackground;
+    this.className = attributes.className;
+    this.Name = attributes.className;
+    this.favSubjects = attributes.favSubjects;
+    this.grade = attributes.grade; // *** STRETCH *** 
+  }
+  listSubjects(){
+    return `Loving ${this.favSubjects}`
+  }
+  PRAssignment(subject){
+    return `${this.name} has submitted a PR for ${subject}`;
+  }
+  sprintChallenge(subject){
+    return `${this.name} has begun sprint challenge on ${subject}`;
+  }
+  //*** STRETCH *** 
+  graduate(){
+    if(this.grade >= 70){
+      return 'Congrats you are graduating!'
+    } else{
+      return 'Looks like you are going to need to Flex - but that is okay!'
+    }
+  }
 }
 
+//creates new student object
+const studentOne = new Student ({
+  name: 'Harrison',
+  age: '25',
+  location: 'West Coast',
+  previousBackground: 'No experience',
+  className: 'WEB33',
+  favSubjects: 'HTML, CSS, Javascript',
+  grade: 92, // part of stretch goal;
+})
+
+console.log(studentOne); // checking to see if Student object is created correctly
+console.log(studentOne.listSubjects()); // checking to see if listSubjects() method is working properly
+console.log(studentOne.PRAssignment('Objects')); // checking to see if PRAssignment() method is working properly
+console.log(studentOne.sprintChallenge('classes')); // checking to see if sprintChallenge() method is working properly
+console.log(britH.grade(studentOne, 'Arrays')) //checks to see if grade method works as expected
+console.log(studentOne.graduate()); // *** STRETCH *** checks to see if graduate method works as expected
 /*
   TASK 6
     - Write a ProjectManager class extending Instructor.
@@ -128,10 +286,40 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
 
+// create ProjectManager object constructor and methods that inherits from Instructor
+class ProjectManager extends Instructor{
+  constructor(attributes) {
+    super(attributes);
+    this.gradClassName = attributes.gradClassName;
+    this.favInstructor = attributes.favInstructor;
+  }
+  standUp(slackChannel){
+    return `${this.name} announces to #${slackChannel} @channel standy times!`
+  }
+  debugsCode(otherStudent, subject){
+    return `${this.name} debugs ${otherStudent.name}'s code on ${subject}`
+  }
 }
 
+//create new new Project Manager object
+const projectManagerOne = new ProjectManager ({
+  name: 'Project Mann',
+  age: '27',
+  location: 'Sao Paolo',
+  specialty: 'Intro to everything',
+  favLanguage: 'Javascript',
+  catchPhrase: 'Hello Web 33',
+  gradClassName: 'PTWEB19',
+  favInstructor: 'Brit Hemming',
+})
+
+console.log(projectManagerOne); // check to see if project manager was created correctly
+console.log(projectManagerOne.demo('Arrays')); // checks to see if demo method was inherited from Instructor
+console.log(projectManagerOne.speak()); // check to see if method was inherited from grandparent Lamdasian
+console.log(projectManagerOne.standUp('web33_harrison')); // checks to see if standUp method is working as expected
+console.log(projectManagerOne.debugsCode(studentOne, 'classes')); // checks to see if debugsCode method is working as expected
+console.log(projectManagerOne.criticize(studentOne)); // *** STRETCH *** checks to see if criticize method  to deduct points from student's grade using math.random and checking if project manager inherits that properly from instructor
 /*
   STRETCH PROBLEM (no tests!)
     - Extend the functionality of the Student by adding a prop called grade and setting it equal to a number between 1-100.
