@@ -190,6 +190,11 @@ class Instructor extends Lambdasian {
   grade(student, subject){
     return `${student.name} receives a perfect score on ${subject}`;
   }
+  // *** STRETCH *** create method to randomly subtract points from a student object's grade.
+  criticize(gradedStudent){
+    let finalGrade = gradedStudent.grade + Math.random();
+    return `${this.name} graded ${gradedStudent.name}'s assignment and it is scored at ${finalGrade}`;
+  }
 }
 
 const britH = new Instructor ({
@@ -230,6 +235,7 @@ class Student extends Lambdasian {
     this.className = attributes.className;
     this.Name = attributes.className;
     this.favSubjects = attributes.favSubjects;
+    this.grade = attributes.grade; // *** STRETCH *** 
   }
   listSubjects(){
     return `Loving ${this.favSubjects}`
@@ -240,6 +246,14 @@ class Student extends Lambdasian {
   sprintChallenge(subject){
     return `${this.name} has begun sprint challenge on ${subject}`;
   }
+  //*** STRETCH *** 
+  graduate(){
+    if(this.grade >= 70){
+      return 'Congrats you are graduating!'
+    } else{
+      return 'Looks like you are going to need to Flex - but that is okay!'
+    }
+  }
 }
 
 //creates new student object
@@ -249,7 +263,8 @@ const studentOne = new Student ({
   location: 'West Coast',
   previousBackground: 'No experience',
   className: 'WEB33',
-  favSubjects: 'HTML, CSS, Javascript'
+  favSubjects: 'HTML, CSS, Javascript',
+  grade: 92, // part of stretch goal;
 })
 
 console.log(studentOne); // checking to see if Student object is created correctly
@@ -257,6 +272,7 @@ console.log(studentOne.listSubjects()); // checking to see if listSubjects() met
 console.log(studentOne.PRAssignment('Objects')); // checking to see if PRAssignment() method is working properly
 console.log(studentOne.sprintChallenge('classes')); // checking to see if sprintChallenge() method is working properly
 console.log(britH.grade(studentOne, 'Arrays')) //checks to see if grade method works as expected
+console.log(studentOne.graduate()); // *** STRETCH *** checks to see if graduate method works as expected
 /*
   TASK 6
     - Write a ProjectManager class extending Instructor.
@@ -303,6 +319,7 @@ console.log(projectManagerOne.demo('Arrays')); // checks to see if demo method w
 console.log(projectManagerOne.speak()); // check to see if method was inherited from grandparent Lamdasian
 console.log(projectManagerOne.standUp('web33_harrison')); // checks to see if standUp method is working as expected
 console.log(projectManagerOne.debugsCode(studentOne, 'classes')); // checks to see if debugsCode method is working as expected
+console.log(projectManagerOne.criticize(studentOne)); // *** STRETCH *** checks to see if criticize method  to deduct points from student's grade using math.random and checking if project manager inherits that properly from instructor
 /*
   STRETCH PROBLEM (no tests!)
     - Extend the functionality of the Student by adding a prop called grade and setting it equal to a number between 1-100.
